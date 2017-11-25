@@ -104,8 +104,8 @@ const dynamicDelete=(req,res)=>{
         res.send('Nosuchtable')
 }
 
-const staffMVP=(req,res)=>{
-    let sql ='SELECT * FROM staffs s join bills b on s.staffNo=b.staffs_staffNo GROUP BY staffNo HAVING COUNT(staffs_staffNo) =  (SELECT MAX(b.num) FROM (SELECT SUM(price) as "num" FROM bills join staffs on bills.staffs_staffNo =staffs.staffNo GROUP BY staffNo) b  )'
+const staffMVP=(req,res)=>{ //พนักงานที่ขายของเยอะสุด
+    let sql ='SELECT s.* FROM staffs s join bills b on s.staffNo=b.staffs_staffNo join productbills on bills_billNo=productbills.billNoGROUP BY staffNo HAVING SUM(price) =  (SELECT MAX(b.num) FROM (SELECT SUM(price) as "num" FROM bills join staffs on bills.staffs_staffNo =staffs.staffNo join productbills on productbills.bills_billNo = bills.billNo GROUP BY staffNo) b  )'
     console.log(sql)
     connection.query(sql,function(err,rows){
         if(err) throw(err)
@@ -113,7 +113,7 @@ const staffMVP=(req,res)=>{
     })
 }
 
-const priceSum=(req,res)=>{
+const priceSum=(req,res)=>{//For หายอดขายในแต่ละวันหรือวันที่ส่งมา
     let obj = req.body;
     let start = obj.body.data.start
     let end = obj.body.data.end
@@ -133,6 +133,17 @@ const productName=(req,res)=>{
         res.send(rows)
     }) 
 }
+
+const BestSellid=(req,res)=>{//หาที่ขายดีสุดหาตาม id 
+    let table = req.params.table
+    let id = req.params.id
+    let sql = 'Select productName from products p join productBills pb on p.productNo = pb.productBills_productNo join bills b on b.billNo=pb.bills_billNo full join staffs s on s.staffNo = b.staffs_staffNo full join members m on m.memberNo = b.members_memberNo join producttypes pt on pt.productTypeNo = p.productTypes_productTypeNo WHERE '+ table + '=' + id +'And b.dateOfBill = ' + req.params.date  
+    connection.query(sql,function(err,rows){
+        if(err) throw(err)
+        res.send(rows)
+    }) 
+}
+
 module.exports={
     dynamicAll,
     dynamicDelete,
