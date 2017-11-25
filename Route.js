@@ -21,10 +21,11 @@ var app=express()
 
 
 app.get('/:table',dynamic.dynamicAll)
-app.get('/:table/:id',dynamic.dynamicIdCall)
+app.get('/:table/:id/:condition',dynamic.dynamicIdCall)
 app.post('/:table',dynamic.dynamicInsert)
 app.patch('/:table/:id',dynamic.dynamicUpdate)
 app.delete('/:table/:id',dynamic.dynamicDelete)
-
+app.get('/staffMVP/method',dynamic.staffMVP)
+app.get('/product?name',dynamic.productName)
 
 app.listen(9000)
