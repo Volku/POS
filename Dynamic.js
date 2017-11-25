@@ -1,57 +1,63 @@
 var mysql=require('mysql');
 var connection = mysql.createConnection({
-    host: '192.168.1.5',
-    user:'mypos',
-    password:'doge123456789',
+    host: '103.86.50.169',
+    user:'doge_pos',
+    password:'JRuMykJ3uMtPeoAh',
     database:'doge_pos'
 })
-
-const dynamicAll=(res,req)=>{
-    connection.connect()
+connection.connect()
+const checkTb = new Map();
+checkTb.set('accounts','members','bills','productbills','staffs');
+const dynamicAll=(req,res)=>{
     let table=req.params.table
-    let sql = 'Select * from ' + table;
-    console.log(sql)
-    connection.query(query,function(err,rows,field){
-        if(err) throw(err)
-        res.send(rows);
-    })
-    connection.end()
+    if(checkTb.has(table)){
+        let sql = 'Select * from ' + table;
+        console.log(sql)
+        connection.query(sql,function(err,rows,field){
+            if(err) throw(err)
+            res.send(rows);
+        })
+    }else
+    res.send('No such table')
 }
 
-const dynamicIdCall=(res,req)=>{
-    connection.connect()
+const dynamicIdCall=(req,res)=>{
     let table=req.params.table
-    let id =req.params.id
-    let obj =req.body
-    let sql = 'Select * from '+ table + " Where " + obj[0] + '=' + id;
-    console.log(sql)
-    connection.query(sql,function(err,rows){
-        if(err) throw(err)
-        res.send(rows)
-    })
-    connection.end()
+    if(checkTb.has(table)){
+        let id =req.params.id
+        let obj =req.body
+        let sql = 'Select * from '+ table + " Where " + obj[0] + '=' + id;
+        console.log(sql)
+        connection.query(sql,function(err,rows){
+            if(err) throw(err)
+            res.send(rows)
+        })
+    }else
+        res.send('No such table')
 }
-const dynamicInsert=(res,req)=>{
-    connection.connect()
+const dynamicInsert=(req,res)=>{
     let obj=req.body;
-    let sql = 'Insert into '+ obj.params.table + 'values (' ;
-    Object.keys(obj).forEach((key,i) => {
-        if (i == Object.key(obj).length -1)
-            sql+=`${obj[key]}`
-        else
-            sql+=`${obj[key]}`+","
+    let table = obj.params.table
+    if(checkTb.has(table)){
+        let sql = 'Insert into '+ table + 'values (' ;
+        Object.keys(obj).forEach((key,i) => {
+            if (i == Object.key(obj).length -1)
+                sql+=`${obj[key]}`
+            else
+                sql+=`${obj[key]}`+","
 
-    })
-    sql+=')'
-    console.log(sql)
-    connection.query(sql,function(err,rows){
-        if(err) throw(err)
-        console.log(rows);
-    })    
-    connection.end()
+        })
+        sql+=')'
+        console.log(sql)
+        connection.query(sql,function(err,rows){
+            if(err) throw(err)
+            console.log(rows);
+        })    
+    }else
+        res.send('No such table')
 }
-const dynamicUpdate=(res,req)=>{
-    connection.connect()
+const dynamicUpdate=(req,res)=>{
+   
     let obj=req.body.data
     let sql = 'Update '+ obj.params.table + 'set ' ;
     Object.keys(obj).forEach((key,i) => {
@@ -69,11 +75,11 @@ const dynamicUpdate=(res,req)=>{
        if(err) throw(err)
         console.log(rows)
    })
-   connection.end()
+   
 }
 
-const dynamicDelete=(res,req)=>{
-    connection.connect()
+const dynamicDelete=(req,res)=>{
+  
     let obj=req.body
     let sql ='Delete From' + req.params.table +'Where' + `${key}` + `${obj[key]}`
     console.log(sql)
@@ -81,7 +87,7 @@ const dynamicDelete=(res,req)=>{
         if(err) throw(err)
         console.log(rows)
     })
-    connection.end()
+   
 }
 
 

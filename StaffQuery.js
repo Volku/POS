@@ -1,4 +1,4 @@
-var mysql=require('mysql');
+/*var mysql=require('mysql');
 var connection = mysql.createConnection({
     host: '192.168.1.5',
     user:'mypos',
@@ -17,8 +17,7 @@ const staffIdDbc = (req, res) => {
         res.send(rows);
         /*res.json({
           data: rows
-        })*/
-      }
+        })      }
     )
     connection.end()
   }
@@ -31,7 +30,7 @@ const staffIdDbc = (req, res) => {
         res.send(rows);
         /*res.json({
           data: rows
-        })*/
+        })
       }
     )
     connection.end()
@@ -71,4 +70,4 @@ const staffIdDbc = (req, res) => {
       staffDel,
       staffIdDbc,
       staffInsert
-  }
+  }*/

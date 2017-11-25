@@ -1,4 +1,4 @@
-var test = require('../ProductQuery')
+//var test = require('../ProductQuery')
 function eieiHandler(req, res) {
     console.log(req.body)
     res.send({

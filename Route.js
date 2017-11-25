@@ -1,5 +1,5 @@
 var express = require('express')
-var eieiHandler = require('./controllers/eieiHandler')
+//var eieiHandler = require('./controllers/eieiHandler')
 var bodyParser=require('body-parser')
 var pconBuild =require('./ProductQuery')
 var dynamic=require('./Dynamic')

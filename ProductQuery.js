@@ -1,4 +1,4 @@
-var mysql=require('mysql');
+/*var mysql=require('mysql');
 var express=require('express')
 var connection = mysql.createConnection({
     host: '192.168.1.5',
@@ -26,8 +26,8 @@ const proAll = (req, res) => {
       res.send(rows);
       /*res.json({
         data: rows
-      })*/
-    }
+      })
+   // }
     // else resolve(rows)
   )
   connection.end()
@@ -41,7 +41,7 @@ const proIdDbc = (req, res) => {
       res.send(rows);
       /*res.json({
         data: rows
-      })*/
+      })
     }
     // else resolve(rows)
 
@@ -60,7 +60,7 @@ const proIdDbc = (req, res) => {
     }
     // else resolve(rows)
   )
-}*/
+}
 
 const proDel=(req,res) =>{
   connection.connect()
@@ -98,4 +98,4 @@ module.exports={
   proAll,
   proInsert,
   proUpdate
-}
+}*/
