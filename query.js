@@ -1,5 +1,5 @@
-const mysql = require('mariasql');
-const connection = new mysql({
+const maria = require('mariasql');
+const connection = new maria({
   host: '103.86.50.169',
   user: 'doge_pos',
   password: 'JRuMykJ3uMtPeoAh',
@@ -159,5 +159,5 @@ module.exports = {
   deleteByID,
   priceSum,
   productName,
-  BestSellid
+  bestSellid
 }

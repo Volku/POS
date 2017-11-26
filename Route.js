@@ -1,10 +1,11 @@
 var express = require('express')
 var cors = require('cors')
 var bodyParser = require('body-parser')
+var session = require('express-session')
 var app = express()
 app.use(cors())
 app.use(bodyParser.json())
-
+app.use(session({ secret: 'mynameisdogeeiei', cookie: { maxAge: 60000 } }))
 const query = require('./query')
 
 app.use((req, res, next) => {
@@ -62,7 +63,7 @@ app.patch('/accounts/:id', query.updateTable('accounts', 'accountNo'))
 app.delete('/accounts/:id', query.deleteByID('accounts', 'accountNo'))
 
 app.post('/report/totalsale/day', query.priceSum)
-app.get('/:column/:id/:date', query.BestSellid)
+app.get('/:column/:id/:date', query.bestSellid)
 // app.get('/staffMVP/method', dynamic.staffMVP)
 // app.get('/product', dynamic.productName)
 

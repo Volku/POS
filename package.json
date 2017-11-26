@@ -19,6 +19,7 @@
     "express-session": "^1.15.6",
     "mariasql": "^0.2.6",
     "mysql": "^2.15.0",
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.12.1",
+    "uuid": "^3.1.0"
   }
 }
