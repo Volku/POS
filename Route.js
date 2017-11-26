@@ -62,6 +62,7 @@ app.patch('/accounts/:id', query.updateTable('accounts', 'accountNo'))
 app.delete('/accounts/:id', query.deleteByID('accounts', 'accountNo'))
 
 app.post('/report/totalsale/day', query.priceSum)
+app.get('/:column/:id/:date', query.BestSellid)
 // app.get('/staffMVP/method', dynamic.staffMVP)
 // app.get('/product', dynamic.productName)
 
