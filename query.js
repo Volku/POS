@@ -127,6 +127,13 @@ const bestSellid = (req, res) => { //หาที่ขายดีสุดห�
     })
 }
 
+const whoTheBoss=(req,res)=>{
+    let sql = 'Select b.* from staffs s right join staffs b on s.supervisor = b.staffNo where b.supervisorNo is Null '
+    connection.query(sql, function (err, rows) {
+      if (err) throw (err)
+      res.send(rows)
+    })
+  }
 
 
 module.exports = {
