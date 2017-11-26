@@ -7,7 +7,13 @@ app.use(bodyParser.json())
 
 const query = require('./query')
 
+app.use((req, res, next) => {
+  console.log('new connection: ' + new Date())
+  next()
+})
+
 app.get('/product', (req, res) => {
+  console.log(req.query.name)
   if(req.query.name == undefined) {
     query.selectAll('product')(req, res)
   } else {

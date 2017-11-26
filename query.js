@@ -1,17 +1,20 @@
-const mysql = require('mysql');
-const connection = mysql.createConnection({
-    host: '103.86.50.169',
-    user: 'doge_pos',
-    password: 'JRuMykJ3uMtPeoAh',
-    database: 'doge_pos'
+const mysql = require('mariasql');
+const connection = new mysql({
+  host: '103.86.50.169',
+  user: 'doge_pos',
+  password: 'JRuMykJ3uMtPeoAh',
+  db: 'doge_pos',
+  charset: 'utf8'
 })
 connection.connect()
 
 const selectAll = (table) => (req, res) => {
   let sql = `SELECT * FROM ${table}`
-  console.log(sql)
   connection.query(sql, (err, rows, field) => {
-    if (err) res.send(err)
+    if (err) { 
+      res.status(400)
+      res.send(err)
+    }
     else res.send({
       data: rows
     })
@@ -21,7 +24,10 @@ const selectAll = (table) => (req, res) => {
 const selectByID = (table, primaryKeyName) => (req, res) => {
   let sql = `SELECT * FROM ${table} WHERE ${primaryKeyName} = ${req.params.id}`
   connection.query(sql, (err, rows, field) => {
-    if (err) res.send(err)
+    if (err) {
+      res.status(400)
+      res.send(err)
+    }
     else res.send({
       data: rows[0]
     })
@@ -47,7 +53,10 @@ const insertInto = (table) => (req, res) => {
   valueString += ')'
   sql += `${columnString} VALUES ${valueString}`
   connection.query(sql, (err, rows) => {
-    if (err) res.send(err)
+    if (err) {
+      res.status(400)
+      res.send(err)
+    }
     else res.send({
       data: rows
     })
@@ -65,10 +74,13 @@ const updateTable = (table, primaryKeyName) => (req, res) => {
   })
   sql += `Where ${primaryKeyName} = ${req.params.id}`
   connection.query(sql, (err, rows) => {
-      if (err) res.send(err)
-      else res.send({
-        data: rows
-      })
+    if (err) {
+      res.status(400)
+      res.send(err)
+    }
+    else res.send({
+      data: rows
+    })
   })
 }
 
@@ -76,7 +88,10 @@ const deleteByID = (table, primaryKeyName) => (req, res) => {
   const id = req.params.id
   let sql = `DELETE FROM ${table} WHERE ${primaryKeyName} = ${id}`
   connection.query(sql, (err, rows) => {
-    if (err) res.send(err)
+    if (err) {
+      res.status(400)
+      res.send(err)
+    }
     else res.send({
       data: rows
     })
