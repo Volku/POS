@@ -84,7 +84,7 @@ const deleteByID = (table, primaryKeyName) => (req, res) => {
 }
 
 const staffMVP = (req, res) => { //พนักงานที่ขายของเยอะสุด
-    let sql = 'SELECT s.* FROM staffs s join bills b on s.staffNo=b.staffs_staffNo join productbills on bills_billNo=productbills.billNoGROUP BY staffNo HAVING SUM(price) =  (SELECT MAX(b.num) FROM (SELECT SUM(price) as "num" FROM bills join staffs on bills.staffs_staffNo =staffs.staffNo join productbills on productbills.bills_billNo = bills.billNo GROUP BY staffNo) b  )'
+    let sql = 'SELECT s.* FROM staffs s join bills b on s.staffNo = b.staffNo join productbills on b.billNo = productbills.billNo GROUP BY b.staffNo HAVING SUM(productbills.price) = ( SELECT MAX(b.num) FROM ( SELECT SUM(price) as "num" FROM bills bi join staffs on bi.staffNo = staffs.staffNo join productbills on productbills.billNo = bi.billNo GROUP BY bi.staffNo ) b )'
     console.log(sql)
     connection.query(sql, function (err, rows) {
         if (err) throw (err)
@@ -96,7 +96,7 @@ const priceSum = (req, res) => { //For หายอดขายในแต่�
   let obj = req.body;
   let start = obj.data.start
   let end = obj.data.end
-  let sql = "SELECT SUM(price) AS 'total' FROM productbills pb join bills b on pb.BILLS_billNo=b.billNo WHERE b.dateOfBill BETWEEN \"" + start + "\" AND \"" + end + "\""
+  let sql = "Select SUM(price) FROM productbills pb join bills b on pb.billNo = b.billNo where b.dateOfBill BETWEEN \'"+ start + "\'AND\'" + end+"\'"
   connection.query(sql, (err, rows) => {
       if (err) res.send(err)
       res.send({
@@ -116,15 +116,18 @@ const productName = (req, res) => {
     })
 }
 
-const BestSellid = (req, res) => { //หาที่ขายดีสุดหาตาม id 
-    let table = req.params.table
+const bestSellid = (req, res) => { //หาที่ขายดีสุดหาตาม id 
+    let column = req.params.column
     let id = req.params.id
-    let sql = 'Select productName from products p join productBills pb on p.productNo = pb.productBills_productNo join bills b on b.billNo=pb.bills_billNo full join staffs s on s.staffNo = b.staffs_staffNo full join members m on m.memberNo = b.members_memberNo join producttypes pt on pt.productTypeNo = p.productTypes_productTypeNo WHERE ' + table + '=' + id + 'And b.dateOfBill = ' + req.params.date
+    let date= req.param.date
+    let sql = 'Select p.productNo, p.productName, p.productTypeNo from product p join producttype pt on pt.productTypeNo = p.productTypeNo WHERE EXISTS ( SELECT pb.productNo from productbills pb join bills b on pb.billNo = b.billNo RIGHT join members m on m.memberNo = b.memberNo Right join staffs s on s.staffNo = b.staffNo where' + column + '=' + id + 'and b.dateOfBill LIKE \''  +date+'\' and p.productNo = pb.productNo'
     connection.query(sql, function (err, rows) {
         if (err) throw (err)
         res.send(rows)
     })
 }
+
+
 
 module.exports = {
   selectAll,
@@ -133,5 +136,6 @@ module.exports = {
   updateTable,
   deleteByID,
   priceSum,
-  productName
+  productName,
+  BestSellid
 }
