@@ -4,7 +4,8 @@
   "description": "sequal",
   "main": "app.js",
   "scripts": {
-    "test": "console.log(\"kappa\");"
+    "test": "console.log(\"kppa\");",
+    "watch": "nodemon --watch . --exec 'node Route.js'"
   },
   "keywords": [
     "Doge"
@@ -13,7 +14,9 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
-    "mysql": "^2.15.0"
+    "mysql": "^2.15.0",
+    "nodemon": "^1.12.1"
   }
 }
